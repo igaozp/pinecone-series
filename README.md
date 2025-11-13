@@ -18,6 +18,8 @@ pinecone-series/
 ├── browser_extractor.js           # 浏览器控制台提取脚本
 ├── open_all_chapters.html         # 章节链接快速访问页面
 ├── FAISS_EXTRACTION_GUIDE.md      # 详细提取指南
+├── USE_JINA_AI.md                 # Jina AI 使用指南（本地环境）
+├── scrape_with_jina.py            # Jina AI 抓取脚本
 ├── scrape_faiss.py                # Python 抓取脚本（基础版）
 ├── scrape_faiss_cloudscraper.py   # Python 抓取脚本（Cloudscraper）
 └── scrape_faiss_playwright.py     # Python 抓取脚本（Playwright）
@@ -49,7 +51,28 @@ FAISS (Facebook AI Similarity Search) 是由 Meta AI Research 开发的用于高
 2. 点击"打开所有章节"按钮或单独打开每个章节
 3. 按照页面上的说明使用浏览器控制台脚本提取内容
 
-### 方法 2: 使用浏览器控制台脚本
+### 方法 2: 使用 Jina AI Reader（推荐用于本地环境）
+
+**在本地计算机上运行**，使用 Jina AI 自动提取并转换为 Markdown：
+
+```bash
+# 使用提供的 API 密钥
+export JINA_API_KEY="jina_ccf592ec8f8e470185afa074e7076614WpvRgv0U8B8R0yI8Dqte51xyw-Wi"
+
+# 提取单个章节
+curl -H "Authorization: Bearer $JINA_API_KEY" \
+  "https://r.jina.ai/https://www.pinecone.io/learn/series/faiss/faiss-tutorial/" \
+  > faiss/chapter01.md
+```
+
+或使用提供的 Python 脚本：
+```bash
+python3 scrape_with_jina.py
+```
+
+**注意**: 在 Docker 容器环境中 Jina AI 也被阻止，需要在本地计算机上运行。详见 `USE_JINA_AI.md`。
+
+### 方法 3: 使用浏览器控制台脚本
 
 1. 访问任一章节 URL（见下方列表）
 2. 按 `F12` 打开开发者工具
@@ -59,7 +82,7 @@ FAISS (Facebook AI Similarity Search) 是由 Meta AI Research 开发的用于高
 6. 自动下载 Markdown 文件
 7. 将文件移动到 `faiss/` 目录
 
-### 方法 3: 使用 Python 脚本（已尝试，受限于网站防护）
+### 方法 4: 使用 Python 脚本（已尝试，受限于网站防护）
 
 由于网站的反爬虫保护机制，自动化 Python 脚本无法直接访问。已尝试的方法包括：
 - 标准 HTTP 请求（requests）
