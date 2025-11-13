@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAISS Series - Chapter Links</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .chapter {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .chapter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .chapter-num {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .chapter-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+        .chapter-link {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 10px 5px 0 0;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .chapter-link:hover {
+            background: #229954;
+        }
+        .copy-script {
+            background: #e74c3c;
+            cursor: pointer;
+        }
+        .copy-script:hover {
+            background: #c0392b;
+        }
+        .btn-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .btn-open-all {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-open-all:hover {
+            background: #8e44ad;
+        }
+        .instructions {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #0c5460;
+        }
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+        .instructions li {
+            margin: 8px 0;
+        }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .status-pending {
+            background: #ffeaa7;
+            color: #2d3436;
+        }
+    </style>
+</head>
+<body>
+    <h1>📚 FAISS Series - Pinecone 文章提取工具</h1>
+
+    <div class="info-box">
+        <strong>⚠️ 注意:</strong> 由于网站防护机制，无法使用自动化脚本直接抓取。
+        请使用下面的浏览器控制台脚本手动提取每个章节。
+    </div>
+
+    <div class="instructions">
+        <h3>🔧 使用说明</h3>
+        <ol>
+            <li>点击章节的 "打开链接" 按钮，在浏览器中打开文章</li>
+            <li>按 <strong>F12</strong> (或 Mac: <strong>Cmd+Option+I</strong>) 打开开发者工具</li>
+            <li>切换到 <strong>Console</strong> 标签</li>
+            <li>点击章节的 "复制脚本" 按钮，然后粘贴到控制台中</li>
+            <li>按 <strong>Enter</strong> 执行脚本</li>
+            <li>脚本会自动下载 Markdown 文件</li>
+            <li>将下载的文件移动到项目的 <code>faiss/</code> 目录</li>
+        </ol>
+    </div>
+
+    <div class="btn-container">
+        <button class="btn-open-all" onclick="openAllChapters()">
+            🚀 在新标签页中打开所有章节
+        </button>
+        <p style="color: #666; font-size: 14px; margin-top: 10px;">
+            (浏览器可能会询问是否允许打开多个弹窗，请选择允许)
+        </p>
+    </div>
+
+    <div id="chapters"></div>
+
+    <script>
+        const chapters = [
+            {
+                num: '01',
+                url: 'https://www.pinecone.io/learn/series/faiss/faiss-tutorial/',
+                title: 'Introduction to Facebook AI Similarity Search (Faiss)'
+            },
+            {
+                num: '02',
+                url: 'https://www.pinecone.io/learn/series/faiss/vector-indexes/',
+                title: 'Nearest Neighbor Indexes for Similarity Search'
+            },
+            {
+                num: '03',
+                url: 'https://www.pinecone.io/learn/series/faiss/locality-sensitive-hashing/',
+                title: 'Locality Sensitive Hashing (LSH): The Illustrated Guide'
+            },
+            {
+                num: '04',
+                url: 'https://www.pinecone.io/learn/series/faiss/locality-sensitive-hashing-random-projection/',
+                title: 'Random Projection for Locality Sensitive Hashing'
+            },
+            {
+                num: '05',
+                url: 'https://www.pinecone.io/learn/series/faiss/product-quantization/',
+                title: 'Product Quantization: Compressing high-dimensional vectors by 97%'
+            },
+            {
+                num: '06',
+                url: 'https://www.pinecone.io/learn/series/faiss/hnsw/',
+                title: 'Hierarchical Navigable Small Worlds (HNSW)'
+            },
+            {
+                num: '07',
+                url: 'https://www.pinecone.io/learn/composite-indexes',
+                title: 'Facebook AI and the Index Factory'
+            }
+        ];
+
+        function openAllChapters() {
+            if (confirm('这将在新标签页中打开所有7个章节。继续吗？')) {
+                chapters.forEach((chapter, index) => {
+                    setTimeout(() => {
+                        window.open(chapter.url, '_blank');
+                    }, index * 500); // 延迟打开，避免被浏览器阻止
+                });
+            }
+        }
+
+        function openChapter(url) {
+            window.open(url, '_blank');
+        }
+
+        async function copyScript() {
+            try {
+                const response = await fetch('browser_extractor.js');
+                const script = await response.text();
+                await navigator.clipboard.writeText(script);
+                alert('✓ 脚本已复制到剪贴板！\n\n请:\n1. 打开章节页面\n2. 按 F12 打开控制台\n3. 粘贴脚本并按 Enter');
+            } catch (error) {
+                // 如果无法加载文件，使用内联脚本
+                const script = `// 请使用 browser_extractor.js 文件中的完整脚本`;
+                alert('请手动打开 browser_extractor.js 文件并复制内容');
+            }
+        }
+
+        // 渲染章节列表
+        const container = document.getElementById('chapters');
+        chapters.forEach(chapter => {
+            const div = document.createElement('div');
+            div.className = 'chapter';
+            div.innerHTML = `
+                <div>
+                    <span class="chapter-num">Chapter ${chapter.num}</span>
+                    <span class="status status-pending">待提取</span>
+                </div>
+                <div class="chapter-title">${chapter.title}</div>
+                <div>
+                    <a href="${chapter.url}" target="_blank" class="chapter-link">
+                        🔗 打开链接
+                    </a>
+                    <button class="chapter-link copy-script" onclick="copyScript()">
+                        📋 复制脚本
+                    </button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    </script>
+
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd;">
+        <h3>📝 提取脚本内容</h3>
+        <p>如果无法使用上面的复制按钮，请手动复制下面的脚本：</p>
+        <pre id="script-content">请查看 browser_extractor.js 文件获取完整脚本</pre>
+    </div>
+
+    <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 5px;">
+        <h3>✅ 验证清单</h3>
+        <p>提取完成后，请确保:</p>
+        <ul>
+            <li>✓ 所有 7 个章节都已下载</li>
+            <li>✓ 文件保存在 <code>faiss/</code> 目录</li>
+            <li>✓ 文件名格式: <code>chapter01.md</code> ~ <code>chapter07.md</code></li>
+            <li>✓ 图片链接完整</li>
+            <li>✓ 代码块格式正确</li>
+        </ul>
+    </div>
+</body>
+</html>
