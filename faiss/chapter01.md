@@ -1,121 +1,123 @@
-# Chapter 01: Introduction to Facebook AI Similarity Search (Faiss)
+# 第 01 章：Facebook AI 相似性搜索（Faiss）简介
 
-Source: https://www.pinecone.io/learn/series/faiss/faiss-tutorial/
+原文：[Faiss 教程](https://www.pinecone.io/learn/series/faiss/faiss-tutorial/)
 
 ---
 
-## Overview
+## 概览
 
-Facebook AI Similarity Search (Faiss) is one of the most popular implementations of efficient similarity search. This chapter introduces the Faiss library, its purpose, capabilities, and context in similarity search.
+Facebook AI Similarity Search（Faiss）是最流行的高效相似性搜索实现之一。本章将介绍 Faiss 库、它的用途与能力，以及它在相似性搜索领域中的定位。
 
-## What is Faiss?
+## 什么是 Faiss？
 
-Faiss is a library developed by Facebook AI that enables efficient similarity search and clustering of dense vectors. It allows you to:
+Faiss 是 Facebook AI 开发的一个库，可用于对稠密向量进行高效的相似性搜索和聚类。使用它可以：
 
-- Build an index of vectors
-- Search for the most similar vectors within that index using another vector as a query
-- Speed up search times to extraordinary levels
+- 为向量构建索引；
+- 用另一个向量作为查询，在索引中搜索与之最相似的向量；
+- 将搜索速度提升到非常高的水平。
 
-This is essential for vector-based AI applications such as:
-- Semantic search
-- Recommendation systems
-- Image and video search
-- Anomaly detection
+这些能力对于以下基于向量的 AI 应用至关重要：
 
-## Why Vector Search?
+- 语义搜索；
+- 推荐系统；
+- 图像和视频搜索；
+- 异常检测。
 
-Traditional search engines work well for exact matches but often fail at identifying semantic or contextual "similarity" between items. Faiss enables applications that need to find items similar in meaning or content rather than exact textual matches.
+## 为什么需要向量搜索？
 
-This is especially useful for:
-- Recommendation engines
-- Media search platforms where "similarity" is measured in vector space
-- Content discovery systems
+传统搜索引擎擅长精确匹配，却往往难以识别项目在语义或上下文上的“相似”。Faiss 让应用能够按含义或内容寻找相似项目，而不是只匹配完全相同的文本。
 
-## Core Concepts
+它尤其适用于：
 
-### Dense Vector Embeddings
+- 推荐引擎；
+- 在向量空间中衡量“相似度”的媒体搜索平台；
+- 内容发现系统。
 
-Faiss uses dense vector embeddings to represent data. These vectors, derived from machine learning models (such as BERT for text or ResNet for images), encode semantic meaning, allowing for numerical comparisons.
+## 核心概念
 
-### Distance Metrics
+### 稠密向量嵌入
 
-Faiss supports multiple similarity metrics:
+Faiss 使用稠密向量嵌入来表示数据。这些向量由机器学习模型生成（例如用于文本的 BERT 或用于图像的 ResNet），能够编码语义信息，从而允许我们用数值方式进行比较。
 
-1. **Euclidean distance (L2)**: For geometric similarity
-2. **Cosine similarity**: Critical for text and embeddings, focusing on orientation rather than size
-3. **Inner product**: For specific use cases
+### 距离度量
 
-### Indexing Methods
+Faiss 支持多种相似性度量：
 
-Faiss implements various indexing methods:
+1. **欧氏距离（L2）**：用于衡量几何上的相似性；
+2. **余弦相似度**：对文本和嵌入尤为重要，它关注方向而非向量大小；
+3. **内积**：适用于特定的使用场景。
 
-1. **Flat Index**: Stores all vectors for brute-force exact search; accurate but slow for large datasets
-2. **Inverted File Index (IVF)**: Partitions vectors into clusters using k-means, enabling much faster approximate search
-3. **Product Quantization (PQ)**: Compresses vectors into shorter codes to reduce memory usage
-4. **Hierarchical Navigable Small World (HNSW)**: Uses graph-based indexing for extremely fast approximate nearest neighbor search
+### 索引方法
 
-## Getting Started with Faiss
+Faiss 实现了多种索引方法：
 
-### Installation
+1. **Flat 索引**：保存全部向量并进行暴力精确搜索；结果准确，但在大型数据集上速度较慢；
+2. **倒排文件索引（IVF）**：使用 k-means 将向量划分为多个聚类，从而实现快得多的近似搜索；
+3. **乘积量化（PQ）**：把向量压缩成更短的编码，以降低内存占用；
+4. **分层可导航小世界（HNSW）**：使用基于图的索引，完成速度极快的近似最近邻搜索。
+
+## Faiss 快速入门
+
+### 安装
 
 ```bash
 pip install faiss-cpu
-# or for GPU support
+# 如需 GPU 支持
 pip install faiss-gpu
 ```
 
-### Basic Example
+### 基础示例
 
 ```python
 import faiss
 import numpy as np
 
-# Create some random vectors
+# 创建一些随机向量
 dimension = 128
-nb = 1000  # number of database vectors
+nb = 1000  # 数据库向量的数量
 xb = np.random.random((nb, dimension)).astype('float32')
 
-# Build the index
+# 构建索引
 index = faiss.IndexFlatL2(dimension)
 index.add(xb)
 
-# Create query vectors
-nq = 5  # number of queries
+# 创建查询向量
+nq = 5  # 查询数量
 xq = np.random.random((nq, dimension)).astype('float32')
 
-# Search for k nearest neighbors
+# 搜索 k 个最近邻
 k = 5
 D, I = index.search(xq, k)
-print(I)  # Indices of nearest neighbors
-print(D)  # Distances to nearest neighbors
+print(I)  # 最近邻的索引
+print(D)  # 到最近邻的距离
 ```
 
-## CPU and GPU Acceleration
+## CPU 与 GPU 加速
 
-Faiss can run on both CPUs and GPUs:
+Faiss 既能在 CPU 上运行，也能在 GPU 上运行：
 
-- **CPU**: Good for moderate-sized datasets
-- **GPU**: Efficiently scales up with GPU implementations, supporting very large vector datasets
+- **CPU**：适合中等规模的数据集；
+- **GPU**：借助 GPU 实现高效扩展，能够支持非常大的向量数据集。
 
-## Applications
+## 应用场景
 
-Faiss has transformed similarity-based workflows, powering:
+Faiss 改变了许多基于相似性的工作流程，常见用途包括：
 
-- Recommendation systems
-- Semantic text search
-- Visual search in images
-- Duplicate detection
-- Anomaly detection
-- Content-based filtering
+- 推荐系统；
+- 语义文本搜索；
+- 图像视觉搜索；
+- 重复内容检测；
+- 异常检测；
+- 基于内容的过滤。
 
-## Summary
+## 小结
 
-Faiss provides a powerful toolkit for efficient similarity search in high-dimensional spaces. Understanding the basics of vector embeddings, distance metrics, and indexing strategies is crucial for building effective search systems.
+Faiss 为高维空间中的高效相似性搜索提供了一套强大的工具。理解向量嵌入、距离度量和索引策略等基础知识，是构建有效搜索系统的关键。
 
-In the following chapters, we'll dive deeper into specific indexing techniques and optimization strategies.
+接下来的章节将深入讲解具体的索引技术和优化策略。
 
-## References
+## 参考资料
 
-- [Faiss GitHub Repository](https://github.com/facebookresearch/faiss)
-- [Faiss Documentation](https://faiss.ai/)
-- Original article: https://www.pinecone.io/learn/series/faiss/faiss-tutorial/
+- [Faiss GitHub 仓库](https://github.com/facebookresearch/faiss)
+- [Faiss 文档](https://faiss.ai/)
+- [英文原文](https://www.pinecone.io/learn/series/faiss/faiss-tutorial/)
