@@ -122,7 +122,7 @@ index.nprobe = 16  # Number of clusters to search
 Two-stage search for better accuracy:
 
 ```python
-# IVFنسخة,PQ with k-factor refinement
+# IVF4096,PQ with k-factor refinement
 index = faiss.index_factory(d, "IVF4096,PQ64,Refine(Flat)")
 
 index.train(training_data)
