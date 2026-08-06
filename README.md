@@ -2,6 +2,8 @@
 
 This repository contains the Markdown versions of the Pinecone FAISS tutorial series.
 
+![Pinecone FAISS Series cover](pinecone-faiss-cover-landscape.png)
+
 [中文版本](README_zh.md)
 
 ## Chapters
