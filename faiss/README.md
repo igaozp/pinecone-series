@@ -2,6 +2,8 @@
 
 This directory contains the Markdown versions of the Pinecone FAISS tutorial series.
 
+[中文版本](README_zh.md)
+
 ## Chapters
 
 1. [Chapter 01: Introduction to Facebook AI Similarity Search (Faiss)](chapter01.md)
