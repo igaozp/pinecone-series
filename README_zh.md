@@ -2,6 +2,8 @@
 
 本仓库包含 Pinecone FAISS 教程系列的 Markdown 版本。
 
+![Pinecone FAISS 系列封面](pinecone-faiss-cover-landscape.png)
+
 ## 章节
 
 1. [第 01 章：Facebook AI 相似性搜索 (Faiss) 简介](faiss/chapter01_zh.md)
